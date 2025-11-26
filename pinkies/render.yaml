@@ -1,0 +1,8 @@
+services:
+  - type: static
+    name: pinkies-portfolio
+    staticPublishPath: ./dist
+    buildCommand: npm run build
+    envVars:
+      - key: NODE_ENV
+        value: production
