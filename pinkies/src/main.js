@@ -31,6 +31,33 @@ function updateIcon(theme) {
   }
 }
 
+// Mobile Menu Toggle
+const menuBtn = document.getElementById('mobile-menu-btn');
+const navLinks = document.querySelector('.nav-links');
+const navLinksItems = document.querySelectorAll('.nav-links a');
+
+menuBtn.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+  const icon = menuBtn.querySelector('i');
+  if (navLinks.classList.contains('active')) {
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-times');
+  } else {
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+  }
+});
+
+// Close mobile menu when a link is clicked
+navLinksItems.forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('active');
+    const icon = menuBtn.querySelector('i');
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+  });
+});
+
 // Custom Cursor
 const cursor = document.querySelector('.cloud-cursor');
 
@@ -47,55 +74,27 @@ document.addEventListener('mouseup', () => {
   cursor.style.transform = 'translate(-50%, -50%) scale(1)';
 });
 
-// Parallax Effect on Mouse Move
-const clouds = document.querySelectorAll('.cloud');
-const eagle = document.querySelector('.eagle');
-
-document.addEventListener('mousemove', (e) => {
-  const x = (window.innerWidth - e.pageX * 2) / 100;
-  const y = (window.innerHeight - e.pageY * 2) / 100;
-
-  clouds.forEach((cloud, index) => {
-    const speed = (index + 1) * 0.5;
-    const xOffset = x * speed;
-    const yOffset = y * speed;
-    // We need to maintain the original animation transform if possible, 
-    // but CSS animation overrides inline styles unless we use a wrapper or composition.
-    // For simplicity, we'll just apply a slight transform to the container or use CSS variables.
-    // Better approach: Update CSS variables.
-    cloud.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
-    // Note: This might conflict with the CSS animation 'drift'. 
-    // To fix, we should wrap clouds in a div that animates, and apply parallax to the inner img.
-    // Or just skip mouse parallax for clouds if they are already drifting.
-    // Let's skip mouse parallax for drifting clouds to avoid conflict/glitch.
-  });
-
-  // Apply parallax to eagle (it also has animation, so same issue).
-  // Let's apply parallax to the background container instead?
-  // Or just leave the CSS animations as they are "smooth parallax" enough.
-});
+// Parallax Effect on Mouse Move - REMOVED to avoid conflict with CSS animations
+// Clouds and Eagle already have smooth CSS animations (drift/fly).
+// Adding JS transform overrides CSS transform, causing glitches.
 
 // Intersection Observer for Scroll Animations
 const observerOptions = {
-  threshold: 0.1
+  threshold: 0.1,
+  rootMargin: "0px 0px -50px 0px"
 };
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      // Add animation classes if needed
-      if (entry.target.classList.contains('glass-card')) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
+      entry.target.classList.remove('hidden');
+      observer.unobserve(entry.target); // Only animate once
     }
   });
 }, observerOptions);
 
-document.querySelectorAll('.section, .glass-card, .neumorphic-card').forEach(el => {
-  // el.style.opacity = '0';
-  // el.style.transform = 'translateY(20px)';
-  // el.style.transition = 'all 0.6s ease-out';
+document.querySelectorAll('.section, .glass-card, .neumorphic-card, .hero-content').forEach(el => {
+  el.classList.add('hidden'); // Set initial state
   observer.observe(el);
 });
