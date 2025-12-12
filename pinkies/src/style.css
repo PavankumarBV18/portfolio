@@ -318,7 +318,10 @@ a {
 
 /* Common Section Styles */
 .section {
-  padding: 5rem 10%;
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
   min-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -529,33 +532,7 @@ a {
   /* stronger shadow on hover */
 }
 
-.cert-img-container {
-  width: 100%;
-  height: 220px;
-  /* Slightly taller to accommodate cert aspect ratios */
-  overflow: hidden;
-  border-bottom: 1px solid var(--glass-border);
-  position: relative;
-  background: rgba(255, 255, 255, 0.8);
-  /* Lighter background for better contrast with certs */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.cert-img-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* Shows full image without cropping */
-  transition: transform 0.5s ease;
-  padding: 10px;
-  /* Add some breathing room */
-}
-
-.cert-card:hover .cert-img-container img {
-  transform: scale(1.05);
-}
 
 .cert-card h3 {
   margin: 1.5rem 1.5rem 0.5rem;
